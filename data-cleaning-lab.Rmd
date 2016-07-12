@@ -1,0 +1,176 @@
+---
+title: "Data Cleaning"
+author: "Alexej Gossmann"
+date: "July 12, 2016"
+output: html_document
+---
+
+### A. "Real Property Taxes" Dataset 
+
+Download the "real property taxes" dataset from the website (via OpenBaltimore), 
+the data is located here (note you don\'t need to unzip it to read it into R):
+http://sisbid.github.io/Module1/data/real_property_tax.csv.gz
+
+1. Read the Property Tax data into R and call it the variable `tax`
+
+```{r}
+tax <- read.csv("real_property_tax.csv.gz", na.string="")
+dim(tax)
+head(tax)
+table(complete.cases(tax))
+```
+
+2. How many addresses pay property taxes? 
+
+```{r}
+length(which(is.na(tax$cityTax)))
+length(which(is.na(tax$stateTax)))
+tax$cityTax <- as.numeric(gsub(pattern = "$", replacement = "",
+                               tax$cityTax, fixed = TRUE))
+tax$stateTax <- as.numeric(gsub(pattern = "$", replacement = "",
+                                tax$stateTax, fixed = TRUE))
+length(which(is.na(tax$cityTax)))
+length(which(is.na(tax$stateTax)))
+print("Num. properties paying city taxes:")
+length(which(tax$cityTax > 0))
+print("Num. properties paying state taxes:")
+length(which(tax$stateTax > 0))
+```
+
+
+3. What is the total city and state tax paid?
+
+```{r}
+paste("Total city:", sum(tax$cityTax, na.rm=TRUE), "$")
+paste("Total state:", sum(tax$stateTax, na.rm=TRUE), "$")
+```
+
+4. How many observations/properties are in each residence code?
+
+```{r}
+table(tax$resCode)
+```
+
+5. What is the 75th percentile of city and state tax paid by residence code?
+
+```{r}
+quantile(tax$cityTax, 0.75, na.rm=TRUE)
+quantile(tax$stateTax, 0.75, na.rm=TRUE)
+```
+
+6. Subset the data to only retain those houses that are principal residences and describe the distribution of property taxes on these residences.
+
+```{r}
+library(stringr)
+tax$resCode <- str_trim(tax$resCode)
+principal.residence <- tax[tax$resCode == "PRINCIPAL RESIDENCE", ]
+summary(principal.residence$cityTax)
+summary(principal.residence$stateTax)
+par(mfrow=c(1,2))
+hist(log(principal.residence$cityTax), xlab = "log(city tax)", main = "city")
+hist(log(principal.residence$stateTax), xlab = "log(state tax)", main = "state")
+```
+
+7. Convert the 'lotSize' variable to a numeric square feet variable. Tips:
+* Look at the data 
+* Assume hyphens represent inches within square foot meassuremnts 
+* Assume decimals within acreage measurements
+* 1 acre = 43560 square feet
+* Look at the data
+
+```{r}
+tax$lotSize[99996:100000]
+x <- as.character(tax$lotSize)
+x <- str_trim(x)
+x[which(x == "")] <- NA
+head(x)
+table(is.na(x))
+
+x.converted <- rep(NA, length(x))
+inacres <- grep(".*ACRES$", x = x)
+y <- sapply(strsplit(x[inacres], split = " "), dplyr::first)
+z <- as.numeric(y)
+
+# This is taking too long now...
+```
+
+### B. "Baltimore Salary 2015" Dataset 
+
+Download the "Salary 2015" Dataset from the website (via OpenBaltimore), which is located here:
+http://sisbid.github.io/Module1/data//Baltimore_City_Employee_Salaries_FY2015.csv
+
+8. Make an object called health.sal using the salaries data set,	with only agencies of those with "fire" (or any forms), if any, in the name
+
+```{r}
+health.sal <- read.csv("Baltimore_City_Employee_Salaries_FY2015.csv", na.string="")
+dim(health.sal)
+head(health.sal)
+table(complete.cases(health.sal)) # might be misleading due to coding of missing values
+```
+
+9. Make a data set called trans which contains only agencies that contain "TRANS".
+
+```{r}
+x <- as.character(health.sal$Agency)
+x <- str_trim(x)
+containstrans <- grep("TRANS", x)
+trans <- health.sal[containstrans, ]
+head(trans)
+dim(trans)
+```
+
+10. What is/are the profession(s) of people who have "abra" in their name for Baltimore's Salaries?
+
+```{r}
+x <- as.character(health.sal$name)
+x <- str_trim(x)
+containsabra <- grep("abra", x)
+health.sal$JobTitle[containsabra]
+```
+
+11. What is the distribution of annual salaries look like? What is the IQR?
+
+```{r}
+x <- as.character(health.sal$AnnualSalary)
+x <- str_trim(x)
+y <- as.numeric(gsub(pattern = "$", replacement = "", x, fixed = TRUE))
+summary(y)
+hist(y, 20)
+health.sal$AnnualSalary <- y
+```
+
+
+12. Convert HireDate to the `Date` class - plot Annual Salary vs Hire Date
+
+```{r}
+library(lubridate)
+x <- as.character(health.sal$HireDate)
+newDate = mdy(x)
+class(newDate)
+head(newDate)
+health.sal$HireDate <- newDate
+head(health.sal)
+```
+
+13. Plot annual salary versus hire date.	Hint: first convert to numeric and date respectively
+
+```{r}
+plot(health.sal$HireDate, health.sal$AnnualSalary)
+```
+
+14. Create a smaller dataset that only includes the Police Department, Fire Department and Sheriff's Office. How many employees are in this new dataset?
+
+```{r}
+x <- as.character(health.sal$Agency)
+x <- str_trim(x)
+table(grep("Police", x, value=TRUE))
+table(grep("Sheriff", x, value=TRUE))
+table(grep("Fire", x, value=TRUE))
+ind <- c(grep("Police", x),
+         grep("Sheriff", x),
+         grep("Fire", x))
+length(ind)
+PFS <- health.sal[ind, ]
+head(PFS)
+dim(PFS)
+```
