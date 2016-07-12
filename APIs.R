@@ -38,3 +38,12 @@ P53 = fromJSON("http://rest.ensembl.org//lookup/id/ENSG00000141510?content-type=
 dim(P53$Transcript)
 names(P53$Transcript)
 P53$Transcript[ , c("Parent", "id", "species", "start", "end")]
+
+# (3)
+BRAF = fromJSON("http://rest.ensembl.org//lookup/symbol/homo_sapiens/BRAF?content-type=application/json;expand=1")
+names(BRAF)
+dim(BRAF$Transcript)
+names(BRAF$Transcript)
+BRAF$id
+BRAF$Transcript[ , c("Parent", "id", "assembly_name", "display_name", "species", "start", "end")]
+
