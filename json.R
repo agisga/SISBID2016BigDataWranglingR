@@ -1,4 +1,4 @@
-install.packages("jsonlite")
+#install.packages("jsonlite")
 library(jsonlite)
 library(dplyr)
 
@@ -12,6 +12,8 @@ sapply(jsonData, class)
 sapply(jsonData, class) %>% table
 
 dim(jsonData$owner)
-head(jsonData$owner)
 names(jsonData$owner)
 jsonData$owner$html_url
+jsonData$owner$id
+# note that owner is an element within each repo entry,
+# but here it is one common data frame for all repos
