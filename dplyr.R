@@ -1,4 +1,6 @@
-# dplyr stuff from the lecture
+#----------------------------
+# dplyr stuff from the day 1
+#----------------------------
 
 library(dplyr)
 
@@ -24,3 +26,53 @@ arrange(df, x)
 arrange(df, x, y)
 arrange(df, desc(x))
 transmute(df, newcol2 = x*3, x, y)
+
+#----------------------------
+# dplyr stuff from day 3
+#----------------------------
+
+library(gapminder)
+
+str(gapminder)
+gtbl = gapminder
+class(gtbl)
+
+glimpse(gtbl) # better head
+filter(gtbl, lifeExp < 29) # filter by rows
+filter(gtbl, country == "Rwanda")
+select(gtbl,country,pop,continent) # subset by columns
+arrange(gtbl,pop) # reorder by population ascending
+arrange(gtbl,desc(pop)) # reorder by population descending
+arrange(gtbl, year, lifeExp)
+mutate(gtbl, newVar = (lifeExp / gdpPercap)) # generate tbl with newVar
+mutate(gtbl, newVar = (lifeExp / gdpPercap), newVar2 = newVar^2)
+gtbl = mutate(gtbl, newVar = (lifeExp / gdpPercap)) # reassign the output
+select(gtbl,lifeExp,gdpPercap,newVar)
+distinct(gtbl) # find distinct rows for repetitive data
+summarize(gtbl, aveLife = mean(lifeExp)) # apply function to data frame
+
+# sampling
+sample_n(gtbl,3)
+sample_frac(gtbl,0.5) # sample 50% of rows
+
+#--- piping
+gtbl %>% head
+gtbl %>% head(3)
+gtbl %>% glimpse
+# base R:
+set.seed(123)
+gtbl1 = gtbl[gtbl$continent=="Asia" & gtbl$lifeExp < 65,]
+gtbl2 = gtbl1[sample(1:dim(gtbl1)[1], size=10),]
+gtbl2
+# vs. dplyr with pipes:
+set.seed(123)
+gtbl2 = gtbl %>% filter(continent == "Asia") %>%
+        filter(lifeExp < 65) %>% sample_n(10)
+
+#--- group_by: devide data frame into multiple data frames
+asdf = sample_n(gtbl, 10)
+qwer = group_by(asdf, continent)
+str(qwer)
+attributes(qwer)
+# what is the average life expectancy by continent?
+gtbl %>% group_by(continent) %>% summarize(aveLife = mean(lifeExp))
