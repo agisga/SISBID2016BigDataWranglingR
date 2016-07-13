@@ -163,12 +163,14 @@ plot(health.sal$HireDate, health.sal$AnnualSalary)
 ```{r}
 x <- as.character(health.sal$Agency)
 x <- str_trim(x)
-table(grep("Police", x, value=TRUE))
-table(grep("Sheriff", x, value=TRUE))
-table(grep("Fire", x, value=TRUE))
-ind <- c(grep("Police", x),
-         grep("Sheriff", x),
-         grep("Fire", x))
+#table(grep("Police", x, value=TRUE))
+#table(grep("Sheriff", x, value=TRUE))
+#table(grep("Fire", x, value=TRUE))
+#ind <- c(grep("Police", x),
+#         grep("Sheriff", x),
+#         grep("Fire", x))
+# better:
+ind <- grep("fire|police|sheriff", x, ignore.case=TRUE)
 length(ind)
 PFS <- health.sal[ind, ]
 head(PFS)

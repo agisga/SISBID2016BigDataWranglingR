@@ -320,8 +320,13 @@ summary(y)</code></pre>
 <ol start="12" style="list-style-type: decimal">
 <li>Convert HireDate to the <code>Date</code> class - plot Annual Salary vs Hire Date</li>
 </ol>
-<pre class="r"><code>library(lubridate)
-x &lt;- as.character(health.sal$HireDate)
+<pre class="r"><code>library(lubridate)</code></pre>
+<pre><code>## 
+## Attaching package: 'lubridate'</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     date</code></pre>
+<pre class="r"><code>x &lt;- as.character(health.sal$HireDate)
 newDate = mdy(x)
 class(newDate)</code></pre>
 <pre><code>## [1] &quot;Date&quot;</code></pre>
@@ -354,177 +359,32 @@ head(health.sal)</code></pre>
 </ol>
 <pre class="r"><code>x &lt;- as.character(health.sal$Agency)
 x &lt;- str_trim(x)
-table(grep(&quot;Police&quot;, x, value=TRUE))</code></pre>
-<pre><code>## 
-## Police Department (001) Police Department (002) Police Department (003) 
-##                      16                      44                      12 
-## Police Department (004) Police Department (005) Police Department (006) 
-##                      33                      44                      50 
-## Police Department (007) Police Department (030) Police Department (031) 
-##                       5                      26                       5 
-## Police Department (032) Police Department (033) Police Department (034) 
-##                       5                      39                      41 
-## Police Department (035) Police Department (036) Police Department (060) 
-##                      54                      13                      11 
-## Police Department (061) Police Department (062) Police Department (063) 
-##                      13                      37                      29 
-## Police Department (064) Police Department (065) Police Department (066) 
-##                      39                      13                      23 
-## Police Department (070) Police Department (090) Police Department (091) 
-##                      24                      27                      12 
-## Police Department (093) Police Department (094) Police Department (095) 
-##                      43                      59                      59 
-## Police Department (096) Police Department (097) Police Department (120) 
-##                      14                      12                      22 
-## Police Department (121) Police Department (122) Police Department (123) 
-##                       1                      12                      42 
-## Police Department (124) Police Department (125) Police Department (126) 
-##                      50                      47                       7 
-## Police Department (127) Police Department (160) Police Department (161) 
-##                       9                      32                      51 
-## Police Department (162) Police Department (163) Police Department (164) 
-##                      43                       3                      46 
-## Police Department (165) Police Department (170) Police Department (190) 
-##                      13                      34                      19 
-## Police Department (192) Police Department (193) Police Department (194) 
-##                      21                      31                      40 
-## Police Department (195) Police Department (196) Police Department (197) 
-##                      32                       8                      13 
-## Police Department (200) Police Department (201) Police Department (220) 
-##                      41                       2                      20 
-## Police Department (221) Police Department (222) Police Department (223) 
-##                      13                      10                      28 
-## Police Department (224) Police Department (225) Police Department (226) 
-##                      40                      41                      23 
-## Police Department (260) Police Department (261) Police Department (262) 
-##                      32                      41                      57 
-## Police Department (263) Police Department (264) Police Department (265) 
-##                      47                       7                      11 
-## Police Department (266) Police Department (295) Police Department (297) 
-##                      14                      34                      30 
-## Police Department (298) Police Department (299) Police Department (300) 
-##                       8                      17                       8 
-## Police Department (302) Police Department (303) Police Department (304) 
-##                      25                       6                      20 
-## Police Department (305) Police Department (307) Police Department (308) 
-##                      17                      21                      13 
-## Police Department (309) Police Department (310) Police Department (311) 
-##                      24                      22                      10 
-## Police Department (312) Police Department (313) Police Department (320) 
-##                      18                       8                      20 
-## Police Department (321) Police Department (322) Police Department (323) 
-##                       7                      69                      22 
-## Police Department (324) Police Department (329) Police Department (330) 
-##                      11                       5                      38 
-## Police Department (331) Police Department (332) Police Department (333) 
-##                       7                       5                      16 
-## Police Department (334) Police Department (335) Police Department (336) 
-##                      26                      14                       4 
-## Police Department (337) Police Department (338) Police Department (341) 
-##                      28                      17                      10 
-## Police Department (347) Police Department (348) Police Department (349) 
-##                      28                      10                      15 
-## Police Department (350) Police Department (351) Police Department (352) 
-##                       5                       7                       6 
-## Police Department (353) Police Department (356) Police Department (360) 
-##                       6                      23                       5 
-## Police Department (361) Police Department (362) Police Department (363) 
-##                      17                      18                      14 
-## Police Department (364) Police Department (365) Police Department (370) 
-##                      10                      24                       9 
-## Police Department (381) Police Department (386) Police Department (389) 
-##                       3                     101                      18 
-## Police Department (390) Police Department (391) Police Department (392) 
-##                       8                       7                       9 
-## Police Department (393) Police Department (395) Police Department (396) 
-##                       2                       2                      30 
-## Police Department (397) Police Department (398) Police Department (400) 
-##                      10                      21                       6 
-## Police Department (405) Police Department (406) Police Department (407) 
-##                      23                       4                       5 
-## Police Department (408) Police Department (409) Police Department (410) 
-##                      40                      15                      15 
-## Police Department (415) Police Department (416) Police Department (420) 
-##                      64                      73                       6 
-## Police Department (422) Police Department (MIL) 
-##                      47                       6</code></pre>
-<pre class="r"><code>table(grep(&quot;Sheriff&quot;, x, value=TRUE))</code></pre>
-<pre><code>## 
-## Sheriff's Office (001) Sheriff's Office (002) Sheriff's Office (004) 
-##                    119                     27                     28 
-## Sheriff's Office (005) Sheriff's Office (006) Sheriff's Office (410) 
-##                      4                     27                      5</code></pre>
-<pre class="r"><code>table(grep(&quot;Fire&quot;, x, value=TRUE))</code></pre>
-<pre><code>## 
-## Fire Department (001) Fire Department (003) Fire Department (004) 
-##                    35                    88                    31 
-## Fire Department (005) Fire Department (006) Fire Department (065) 
-##                     1                    35                     4 
-## Fire Department (066) Fire Department (102) Fire Department (104) 
-##                     2                    19                    17 
-## Fire Department (105) Fire Department (106) Fire Department (108) 
-##                    19                    26                    24 
-## Fire Department (113) Fire Department (114) Fire Department (120) 
-##                    21                    21                    20 
-## Fire Department (121) Fire Department (123) Fire Department (126) 
-##                    20                    27                    18 
-## Fire Department (127) Fire Department (129) Fire Department (130) 
-##                    21                    24                    16 
-## Fire Department (131) Fire Department (133) Fire Department (135) 
-##                    23                    20                    18 
-## Fire Department (136) Fire Department (139) Fire Department (140) 
-##                    18                    28                    22 
-## Fire Department (141) Fire Department (142) Fire Department (143) 
-##                    24                    20                    18 
-## Fire Department (144) Fire Department (145) Fire Department (146) 
-##                    16                    19                    16 
-## Fire Department (147) Fire Department (150) Fire Department (151) 
-##                    16                    19                    20 
-## Fire Department (152) Fire Department (153) Fire Department (154) 
-##                    17                    16                    20 
-## Fire Department (155) Fire Department (156) Fire Department (157) 
-##                    19                    17                    18 
-## Fire Department (158) Fire Department (201) Fire Department (203) 
-##                    15                    19                    23 
-## Fire Department (205) Fire Department (206) Fire Department (208) 
-##                    23                    21                    23 
-## Fire Department (210) Fire Department (212) Fire Department (216) 
-##                    21                    23                    22 
-## Fire Department (218) Fire Department (220) Fire Department (221) 
-##                    24                    23                    19 
-## Fire Department (223) Fire Department (225) Fire Department (226) 
-##                    22                    15                    21 
-## Fire Department (227) Fire Department (229) Fire Department (230) 
-##                    21                    21                    22 
-## Fire Department (301) Fire Department (460) Fire Department (462) 
-##                    25                    47                    52 
-## Fire Department (463) Fire Department (464) Fire Department (465) 
-##                    53                    55                    53 
-## Fire Department (601) Fire Department (603) Fire Department (645) 
-##                    10                    44                     2 
-## Fire Department (MIL) 
-##                     3</code></pre>
-<pre class="r"><code>ind &lt;- c(grep(&quot;Police&quot;, x),
-         grep(&quot;Sheriff&quot;, x),
-         grep(&quot;Fire&quot;, x))
+#table(grep(&quot;Police&quot;, x, value=TRUE))
+#table(grep(&quot;Sheriff&quot;, x, value=TRUE))
+#table(grep(&quot;Fire&quot;, x, value=TRUE))
+#ind &lt;- c(grep(&quot;Police&quot;, x),
+#         grep(&quot;Sheriff&quot;, x),
+#         grep(&quot;Fire&quot;, x))
+# better:
+ind &lt;- grep(&quot;fire|police|sheriff&quot;, x, ignore.case=TRUE)
 length(ind)</code></pre>
 <pre><code>## [1] 4922</code></pre>
 <pre class="r"><code>PFS &lt;- health.sal[ind, ]
 head(PFS)</code></pre>
-<pre><code>##                  name               JobTitle AgencyID
-## 4    Abbene,Anthony M         POLICE OFFICER   A99005
-## 8      Abdi,Ezekiel W        POLICE SERGEANT   A99127
-## 29 Abrahams,Brandon A POLICE OFFICER TRAINEE   A99416
-## 40     Acord,Ashley M         POLICE OFFICER   A99006
-## 45   Adams Jr,Wayne A         POLICE OFFICER   A99295
-## 51      Adams,Damon R         POLICE OFFICER   A99307
-##                     Agency   HireDate AnnualSalary  GrossPay
-## 4  Police Department (005) 2013-07-24        46309 $59620.16
-## 8  Police Department (127) 2007-06-14        77343 $92574.91
-## 29 Police Department (416) 2015-01-20        46199 $18387.12
-## 40 Police Department (006) 2014-04-10        46309 $49193.52
-## 45 Police Department (295) 1997-07-28        73858 $78814.04
-## 51 Police Department (307) 2003-10-23        68013 $97765.28</code></pre>
+<pre><code>##                   name                    JobTitle AgencyID
+## 4     Abbene,Anthony M              POLICE OFFICER   A99005
+## 7   Abdal-Rahim,Naim A EMT Firefighter Suppression   A64120
+## 8       Abdi,Ezekiel W             POLICE SERGEANT   A99127
+## 9  Abdul Adl,Attrice A    RADIO DISPATCHER SHERIFF   A38410
+## 24  Abler II,Stanley C               PARAMEDIC CRT   A64465
+## 29  Abrahams,Brandon A      POLICE OFFICER TRAINEE   A99416
+##                     Agency   HireDate AnnualSalary   GrossPay
+## 4  Police Department (005) 2013-07-24        46309  $59620.16
+## 7    Fire Department (120) 2011-03-30        62175  $83757.48
+## 8  Police Department (127) 2007-06-14        77343  $92574.91
+## 9   Sheriff's Office (410) 1999-09-02        44548  $55943.29
+## 24   Fire Department (465) 2006-03-20        65480 $104095.81
+## 29 Police Department (416) 2015-01-20        46199  $18387.12</code></pre>
 <pre class="r"><code>dim(PFS)</code></pre>
 <pre><code>## [1] 4922    7</code></pre>
 </div>
